@@ -10,4 +10,5 @@ keras
 sklearn
 pymongo
 tensorflow
+sklearn
 Gunicorn
