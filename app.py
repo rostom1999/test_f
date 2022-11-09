@@ -1,5 +1,5 @@
 from flask import Flask
-
+import dash_bootstrap_components
 app = Flask(__name__)
 
 

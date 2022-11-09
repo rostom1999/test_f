@@ -1,1 +1,3 @@
 flask
+dash_bootstrap_components
+Gunicorn
