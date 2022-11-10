@@ -1,23 +1,19 @@
-from flask import Flask
-from dash import *
+from dash import Dash, dcc, html, dash_table, Input, Output, callback
 import plotly.express as px
 import dash_bootstrap_components as dbc
 from dash_bootstrap_templates import ThemeChangerAIO, template_from_url
 from dash import Dash, html ,dcc
 import pandas as pd
 from datetime import datetime
-import  sklearn
+import MetaTrader5 as mt5
 import pandas as pd
 import pytz
 import plotly.graph_objects as go
 from keras.models import load_model
+import pymongo
 import plotly.offline as pyo
 import numpy as np
-#   import sklearn
-import pymongo
-import json
-import dash
-
+from sklearn.preprocessing import MinMaxScaler
 
 
 

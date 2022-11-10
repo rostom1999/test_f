@@ -10,5 +10,5 @@ keras
 sklearn
 pymongo
 tensorflow
-sklearn
+scikit-learn
 Gunicorn
