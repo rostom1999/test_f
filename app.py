@@ -52,7 +52,7 @@ table = dash_table.DataTable(
 )
 
 
-
+"""
 MODEL_PATH = 'histo_model_f.h5'
 model = load_model(MODEL_PATH)
 training_set = rates_frame.iloc[:, 1:2].values
@@ -80,10 +80,12 @@ data['pred']=pred
 tab1 = dbc.Tab([dcc.Graph(id="line-chart" , figure={'data':[ {'x':df.time,'y':df.close}]}   ) , ], label="Close Volatility"  )
 tab2 = dbc.Tab([dcc.Graph(id="line-chart2" , figure={'data':[ {'x':data.time,'y':data.pred}, {'x':data.time,'y':data.train}   ]}   ) , ], label="Predict Close Volatility ( LSTM)")
 tab3 = dbc.Tab([table], label="Table", className="p-4")
-tabs = dbc.Card(dbc.Tabs([tab1, tab2, tab3]))
 
 
-
+"""
+tab1 = dbc.Tab([dcc.Graph(id="line-chart" , figure={'data':[ {'x':df.time,'y':df.close}]}   ) , ], label="Close Volatility"  )
+tab3 = dbc.Tab([table], label="Table", className="p-4")
+tabs = dbc.Card(dbc.Tabs([tab1,tab3]))
 app.layout = dbc.Container(
     [
         header,
@@ -97,7 +99,8 @@ app.layout = dbc.Container(
                     ],
                     width=1,
                 ),
-                dbc.Col([tabs], width=8),
+                dbc.Col([tabs], width=8)
+                ,
             ]
         ),
     ],
