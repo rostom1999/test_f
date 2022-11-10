@@ -5,7 +5,6 @@ from dash_bootstrap_templates import ThemeChangerAIO, template_from_url
 from dash import Dash, html ,dcc
 import pandas as pd
 from datetime import datetime
-import MetaTrader5 as mt5
 import pandas as pd
 import pytz
 import plotly.graph_objects as go
