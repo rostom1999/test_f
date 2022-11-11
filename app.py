@@ -31,94 +31,92 @@ rates_frame=rates_frame.drop(columns=['_id'])
 df = rates_frame
 """
 
+def test():
+    ar = np.array([[1.1, 2, 3.3, 4], [2.7, 10, 5.4, 7], [5.3, 9, 1.5, 15]])
+    df = pd.DataFrame(ar, index=['a1', 'a2', 'time'], columns=['A', 'B', 'time', 'close'])
 
-ar = np.array([[1.1, 2, 3.3, 4], [2.7, 10, 5.4, 7], [5.3, 9, 1.5, 15]])
-df = pd.DataFrame(ar, index = ['a1', 'a2', 'time'], columns = ['A', 'B', 'time', 'close'])
+    # stylesheet with the .dbc class
 
+    dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
+    app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc_css])
 
-# stylesheet with the .dbc class
+    header = html.H4(
+        "Historical Volatility", className="bg-primary text-white p-2 mb-2 text-center"
+    )
 
-dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
-app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc_css])
+    table = dash_table.DataTable(
+        id="table",
+        columns=[{"name": i, "id": i, "deletable": True} for i in df.columns],
+        data=df.to_dict("records"),
+        page_size=10,
+        editable=True,
+        cell_selectable=True,
+        filter_action="native",
+        sort_action="native",
+        style_table={"overflowX": "auto"},
+        row_selectable="multi",
+    )
 
-header = html.H4(
-    "Historical Volatility", className="bg-primary text-white p-2 mb-2 text-center"
-)
+    """
+    MODEL_PATH = 'histo_model_f.h5'
+    model = load_model(MODEL_PATH)
+    training_set = rates_frame.iloc[:, 1:2].values
 
-table = dash_table.DataTable(
-    id="table",
-    columns=[{"name": i, "id": i, "deletable": True} for i in df.columns],
-    data=df.to_dict("records"),
-    page_size=10,
-    editable=True,
-    cell_selectable=True,
-    filter_action="native",
-    sort_action="native",
-    style_table={"overflowX": "auto"},
-    row_selectable="multi",
-)
-
-
-"""
-MODEL_PATH = 'histo_model_f.h5'
-model = load_model(MODEL_PATH)
-training_set = rates_frame.iloc[:, 1:2].values
-
-sc = MinMaxScaler(feature_range = (0, 1))
-training_set_scaled = sc.fit_transform(training_set)
+    sc = MinMaxScaler(feature_range = (0, 1))
+    training_set_scaled = sc.fit_transform(training_set)
 
 
-X_test = []
-for i in range(700 , 1251):
- X_test.append(training_set_scaled[i-60:i, 0])
-X_test = np.array(X_test)
-X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
-pred=model.predict(X_test)
+    X_test = []
+    for i in range(700 , 1251):
+     X_test.append(training_set_scaled[i-60:i, 0])
+    X_test = np.array(X_test)
+    X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
+    pred=model.predict(X_test)
 
-data=rates_frame[700:1251]
-data['train']=training_set_scaled[700:1251]
-data['pred']=pred
+    data=rates_frame[700:1251]
+    data['train']=training_set_scaled[700:1251]
+    data['pred']=pred
 
 
 
 
 
 
-tab1 = dbc.Tab([dcc.Graph(id="line-chart" , figure={'data':[ {'x':df.time,'y':df.close}]}   ) , ], label="Close Volatility"  )
-tab2 = dbc.Tab([dcc.Graph(id="line-chart2" , figure={'data':[ {'x':data.time,'y':data.pred}, {'x':data.time,'y':data.train}   ]}   ) , ], label="Predict Close Volatility ( LSTM)")
-tab3 = dbc.Tab([table], label="Table", className="p-4")
+    tab1 = dbc.Tab([dcc.Graph(id="line-chart" , figure={'data':[ {'x':df.time,'y':df.close}]}   ) , ], label="Close Volatility"  )
+    tab2 = dbc.Tab([dcc.Graph(id="line-chart2" , figure={'data':[ {'x':data.time,'y':data.pred}, {'x':data.time,'y':data.train}   ]}   ) , ], label="Predict Close Volatility ( LSTM)")
+    tab3 = dbc.Tab([table], label="Table", className="p-4")
 
 
-"""
-tab1 = dbc.Tab([dcc.Graph(id="line-chart" , figure={'data':[ {'x':df.time,'y':df.close}]}   ) , ], label="Close Volatility"  )
-tab3 = dbc.Tab([table], label="Table", className="p-4")
-tabs = dbc.Card(dbc.Tabs([tab1,tab3]))
-app.layout = dbc.Container(
-    [
-        header,
-        dbc.Row(
-            [
-                dbc.Col(
-                    [
+    """
+    tab1 = dbc.Tab([dcc.Graph(id="line-chart", figure={'data': [{'x': df.time, 'y': df.close}]}), ],
+                   label="Close Volatility")
+    tab3 = dbc.Tab([table], label="Table", className="p-4")
+    tabs = dbc.Card(dbc.Tabs([tab1, tab3]))
+    app.layout = dbc.Container(
+        [
+            header,
+            dbc.Row(
+                [
+                    dbc.Col(
+                        [
 
-                        # When running this app locally, un-comment this line:
-                         ThemeChangerAIO(aio_id="theme")
-                    ],
-                    width=1,
-                ),
-                dbc.Col([tabs], width=8)
-                ,
-            ]
-        ),
-    ],
-    fluid=True,
-    className="dbc dbc-row-selectable",
-)
-
-
-
+                            # When running this app locally, un-comment this line:
+                            ThemeChangerAIO(aio_id="theme")
+                        ],
+                        width=1,
+                    ),
+                    dbc.Col([tabs], width=8)
+                    ,
+                ]
+            ),
+        ],
+        fluid=True,
+        className="dbc dbc-row-selectable",
+    )
 
 
+"""""
 if __name__ == "__main__":
 
     app.run_server(debug=True)
+"""
