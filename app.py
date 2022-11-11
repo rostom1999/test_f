@@ -15,7 +15,7 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 
 
-
+"""""
 clinet=pymongo.MongoClient("mongodb+srv://admin:H1IbFaRWkbw4nLpL@metatradeer.v87htex.mongodb.net/test")
 db=clinet["metatrader"]
 data=db['metatrader5']
@@ -26,7 +26,9 @@ rates_frame=pd.DataFrame(list_c)
 rates_frame=rates_frame.drop(columns=['_id'])
 
 df = rates_frame
-
+"""
+ar = np.array([[1.1, 2, 3.3, 4], [2.7, 10, 5.4, 7], [5.3, 9, 1.5, 15]])
+df = pd.DataFrame(ar, index = ['a1', 'a2', 'time'], columns = ['A', 'B', 'time', 'close'])
 
 
 # stylesheet with the .dbc class
@@ -114,4 +116,4 @@ app.layout = dbc.Container(
 
 
 if __name__ == "__main__":
-    app.run_server(debug=False,host='0.0.0.0')
+    app.run_server(debug=True)
